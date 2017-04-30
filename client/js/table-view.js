@@ -1,4 +1,4 @@
-const { getLetterRange } = require('./array-util');
+const { getLetterRange, getRange, getSum } = require('./array-util');
 const { removeChildren, createTR, createTD, createTH } = require('./dom-util');
 
 class TableView{
@@ -17,6 +17,7 @@ class TableView{
 		this.headerRowEl = document.querySelector('THEAD TR');
 		this.sheetBodyEl = document.querySelector('TBODY');
 		this.formulaBarEl = document.querySelector('#formula-bar')
+		this.footerRowEl = document.querySelector('TFOOT TR')
 	}
 
 	initCurrentCell() {
@@ -37,6 +38,7 @@ class TableView{
 	renderTable(){
 		this.renderTableHeader();
 		this.renderTableBody();
+		this.renderTableFooter();
 	}
 
 	renderTableHeader() {
@@ -52,15 +54,22 @@ class TableView{
 			   this.currentCellLocation.row === row ;
 	}
 
+	isCurrentColumn(col) {
+		return this.currentCellLocation.col === col
+	}
+
 	renderTableBody(){
 		const fragment = document.createDocumentFragment();
 
 		for (let row = 0; row < this.model.numRows; row++) {
 			const tr = createTR();
+
+
 			for (let col = 0; col < this.model.numCols; col++) {
 				const position = {col: col, row: row};
 				const value = this.model.getValue(position);
 				const td = createTD(value);
+
 
 				if (this.isCurrentCell(col, row)) {
 					td.className = 'current-cell';
@@ -75,6 +84,27 @@ class TableView{
 		this.sheetBodyEl.appendChild(fragment);
 	}
 
+	renderTableFooter() {
+		const fragment = document.createDocumentFragment();	
+		
+		for (let col = 0; col < this.model.numCols; col++) {
+			let columnSum = 0
+			for (let row = 0; row < this.model.numRows; row++) {
+				const position = {col: col, row: row};
+				const value = parseInt(this.model.getValue(position));
+				if (!isNaN(value)) {
+					columnSum += value;
+				}
+			}
+			fragment.appendChild(createTD(columnSum))
+		}
+
+		removeChildren(this.footerRowEl);
+		this.footerRowEl.appendChild(fragment)
+
+	}
+
+
 	attachEventHandlers() { 
 		this.sheetBodyEl.addEventListener('click', this.handleSheetClick.bind(this));
 		this.formulaBarEl.addEventListener('keyup', this.handleFormulaBarChange.bind(this));
@@ -86,6 +116,7 @@ class TableView{
 		const value = this.formulaBarEl.value;
 		this.model.setValue(this.currentCellLocation, value);
 		this.renderTableBody();
+		this.renderTableFooter();
 	}
 
 	handleSheetClick(evt) {
