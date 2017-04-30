@@ -1,5 +1,6 @@
 const { getRange,
-		getLetterRange } = require('../array-util')
+		getLetterRange,
+		getSum } = require('../array-util')
 
 describe('array-util', () => {
 
@@ -28,6 +29,20 @@ describe('array-util', () => {
 
 		it('produces a valid letter range starting at B', () => {
 			expect(getLetterRange('B', 5)).toEqual(['B', 'C', 'D', 'E', 'F']);
+		});
+	});
+
+	describe('getSum()', () => {
+		it('produces 0 when an empty array is the input', () => {
+			expect(getSum([])).toEqual(0);
+		});
+
+		it('produces a sum of an array of numbers', () => {
+			expect(getSum([1, 2, 3, 4])).toEqual(10);
+		});
+
+		it('produces a negative sum when passed with an array of negative numbers', () => {
+			expect(getSum([-1, -2, -3, -4])).toEqual(-10);
 		});
 	});
 });

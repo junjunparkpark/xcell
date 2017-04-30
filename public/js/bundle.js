@@ -74,18 +74,7 @@ class TableModel {
 	setValue(location,value){
 		this.data[this._getCellId(location)] = value;
 	}
-/*
-	getSumOfColumn(colPosition) {
-		let sum = 0
-		for (i = 0; i < numRows; i++) {
-			let current = getValue(`${colPosition}:${i}`)
-			if (!isNaN(current)){
-				sum += current
-			}
-		}
-		return sum
-	}
-*/
+
 }
 
 module.exports = TableModel;
@@ -156,7 +145,6 @@ class TableView{
 		for (let row = 0; row < this.model.numRows; row++) {
 			const tr = createTR();
 
-
 			for (let col = 0; col < this.model.numCols; col++) {
 				const position = {col: col, row: row};
 				const value = this.model.getValue(position);
@@ -176,19 +164,19 @@ class TableView{
 		this.sheetBodyEl.appendChild(fragment);
 	}
 
-	renderTableFooter() {
+	renderTableFooter() {	
 		const fragment = document.createDocumentFragment();	
 		
 		for (let col = 0; col < this.model.numCols; col++) {
-			let columnSum = 0
+			let nums = []
 			for (let row = 0; row < this.model.numRows; row++) {
 				const position = {col: col, row: row};
 				const value = parseInt(this.model.getValue(position));
 				if (!isNaN(value)) {
-					columnSum += value;
+					nums.push(value);
 				}
 			}
-			fragment.appendChild(createTD(columnSum))
+			fragment.appendChild(createTD(getSum(nums)))
 		}
 
 		removeChildren(this.footerRowEl);

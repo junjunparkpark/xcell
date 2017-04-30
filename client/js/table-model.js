@@ -16,18 +16,7 @@ class TableModel {
 	setValue(location,value){
 		this.data[this._getCellId(location)] = value;
 	}
-/*
-	getSumOfColumn(colPosition) {
-		let sum = 0
-		for (i = 0; i < numRows; i++) {
-			let current = getValue(`${colPosition}:${i}`)
-			if (!isNaN(current)){
-				sum += current
-			}
-		}
-		return sum
-	}
-*/
+
 }
 
 module.exports = TableModel;
