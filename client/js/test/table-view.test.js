@@ -97,4 +97,28 @@ describe('table-view', () => {
 			expect(ths.length).toBe(numCols);
 		});
 	});
+
+	describe('table footer', () => {
+		it('fills in values from the columns above it', () => {
+			const model = new TableModel(3, 3);
+			const view = new TableView(model);
+			model.setValue({col: 0, row: 0}, 100);
+			view.init();
+
+			const tfs = document.querySelectorAll('TFOOT TR');
+			expect(tfs[0].cells[0].textContent).toBe('100');
+		});
+		
+		it('has valid sum of column numbers', () => {
+			const model = new TableModel(3, 3);
+			const view = new TableView(model);
+			model.setValue({col: 0, row: 0}, 10);
+			model.setValue({col: 0, row: 1}, 20);
+			model.setValue({col: 0, row: 2}, 30);
+			view.init();
+
+			const tfs = document.querySelectorAll('TFOOT TR');
+			expect(tfs[0].cells[0].textContent).toBe('60');
+		});
+	});
 });
