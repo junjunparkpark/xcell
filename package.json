@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "browserify client/app.js -o client/bundle.js",
-    "start": "node server/server.js",
+    "start": "node public/index.js",
     "build": "mkdir -p public/js; browserify client/js/app.js > public/js/bundle.js",
     "watch": "watchify client/js/app.js -o public/js/bundle.js",
     "test": "jest"
