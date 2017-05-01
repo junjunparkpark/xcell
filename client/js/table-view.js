@@ -54,10 +54,6 @@ class TableView{
 			   this.currentCellLocation.row === row ;
 	}
 
-	isCurrentColumn(col) {
-		return this.currentCellLocation.col === col
-	}
-
 	renderTableBody(){
 		const fragment = document.createDocumentFragment();
 
