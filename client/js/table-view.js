@@ -89,9 +89,9 @@ class TableView{
 			let columnValues = []
 			for (let row = 0; row < this.model.numRows; row++) {
 				const position = {col: col, row: row};
-				const value = parseInt(this.model.getValue(position));
-				if (!isNaN(value)) {
-					columnValues.push(value);
+				const cellValue = parseInt(this.model.getValue(position));
+				if (!isNaN(cellValue)) {
+					columnValues.push(cellValue);
 				}
 			}
 			fragment.appendChild(createTD(getSum(columnValues)))
