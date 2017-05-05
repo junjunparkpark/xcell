@@ -97,9 +97,12 @@ describe('table-view', () => {
 			expect(ths.length).toBe(numCols);
 		});
 	});
+	// Write your test assertions as though another dev, 
+	// way less familiar with your code than you, was going to read them. 
+	// I'm not quite sure what "fills in values from the columns above it" means.
 
 	describe('table footer', () => {
-		it('fills in values from the columns above it', () => {
+		it('renders a valid number from a cell in the adjacent column', () => {
 			const model = new TableModel(3, 3);
 			const view = new TableView(model);
 			model.setValue({col: 0, row: 0}, 100);
@@ -108,8 +111,8 @@ describe('table-view', () => {
 			const tfs = document.querySelectorAll('TFOOT TR');
 			expect(tfs[0].cells[0].textContent).toBe('100');
 		});
-		
-		it('has valid sum of column numbers', () => {
+
+		it('renders a valid sum of all the numbers of cells in the adjacent column', () => {
 			const model = new TableModel(3, 3);
 			const view = new TableView(model);
 			model.setValue({col: 0, row: 0}, 10);
@@ -120,5 +123,32 @@ describe('table-view', () => {
 			const tfs = document.querySelectorAll('TFOOT TR');
 			expect(tfs[0].cells[0].textContent).toBe('60');
 		});
+
+		// Add at least one test that tests against edge cases. 
+		// For instance, it "calculates the sum correctly when non-numbers are included in the column".
+		it('ignores when non-numbers are in the adjacent column and renders nothing in the adjacent footer', () => {
+			const model = new TableModel(3, 3);
+			const view = new TableView(model);
+			model.setValue({col: 0, row: 0}, 'Harambe');
+			model.setValue({col: 0, row: 1}, 'Is');
+			model.setValue({col: 0, row: 2}, 'Alive');
+			view.init();
+
+			const tfs = document.querySelectorAll('TFOOT TR');
+			expect(tfs[0].cells[0].textContent).toBe('')
+		});
+
+		it('calculates the sum correctly when non-numbers are included with numbers in the column', () => {
+			const model = new TableModel(3, 3);
+			const view = new TableView(model);
+			model.setValue({col: 0, row: 0}, 10);
+			model.setValue({col: 0, row: 1}, 'A');
+			model.setValue({col: 0, row: 2}, 30);
+			view.init();
+
+			const tfs = document.querySelectorAll('TFOOT TR');
+			expect(tfs[0].cells[0].textContent).toBe('40')
+		});
+
 	});
 });
