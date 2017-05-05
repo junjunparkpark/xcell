@@ -83,15 +83,18 @@ class TableView{
 		const fragment = document.createDocumentFragment();	
 		
 		for (let col = 0; col < this.model.numCols; col++) {
-			let nums = []
+			// What are the "nums" that this array holds? 
+			// Choose variable names that another dev would understand with little extra searching.
+			// Is this column values? Column numbers? Row numbers? etc.
+			let columnValues = []
 			for (let row = 0; row < this.model.numRows; row++) {
 				const position = {col: col, row: row};
 				const value = parseInt(this.model.getValue(position));
 				if (!isNaN(value)) {
-					nums.push(value);
+					columnValues.push(value);
 				}
 			}
-			fragment.appendChild(createTD(getSum(nums)))
+			fragment.appendChild(createTD(getSum(columnValues)))
 		}
 
 		removeChildren(this.footerRowEl);
